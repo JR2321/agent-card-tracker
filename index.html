@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent Card Tracker</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --card-bg: #12121a;
+    --border: #1e1e2e;
+    --text: #e0e0e8;
+    --muted: #8888a0;
+    --accent: #6c5ce7;
+    --accent2: #00cec9;
+    --green: #00b894;
+    --orange: #fdcb6e;
+    --red: #e17055;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding: 2rem;
+  }
+  .header {
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .header .subtitle { color: var(--muted); font-size: 0.9rem; }
+  .stats {
+    display: flex;
+    gap: 2rem;
+  }
+  .stat {
+    text-align: center;
+  }
+  .stat .num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--accent2);
+  }
+  .stat .label {
+    font-size: 0.75rem;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .filters {
+    max-width: 1200px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover, .filter-btn.active {
+    border-color: var(--accent);
+    color: var(--text);
+    background: rgba(108,92,231,0.1);
+  }
+  .grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 1.2rem;
+  }
+  .product-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .product-card:hover {
+    border-color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .product-card .top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.75rem;
+  }
+  .product-card .name {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .product-card .category {
+    font-size: 0.7rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    background: rgba(108,92,231,0.15);
+    color: var(--accent);
+    white-space: nowrap;
+  }
+  .product-card .desc {
+    color: var(--muted);
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  .product-card .desc.expanded {
+    -webkit-line-clamp: unset;
+  }
+  .product-card .meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    font-size: 0.8rem;
+  }
+  .meta-row {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+  .meta-label {
+    color: var(--muted);
+    min-width: 60px;
+  }
+  .meta-value { color: var(--text); }
+  .meta-value a {
+    color: var(--accent2);
+    text-decoration: none;
+  }
+  .meta-value a:hover { text-decoration: underline; }
+  .status-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  .status-live { background: rgba(0,184,148,0.15); color: var(--green); }
+  .status-beta { background: rgba(253,203,110,0.15); color: var(--orange); }
+  .status-pilot { background: rgba(108,92,231,0.15); color: var(--accent); }
+  .notes {
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem;
+    color: var(--muted);
+    font-style: italic;
+  }
+  .updated {
+    max-width: 1200px;
+    margin: 2rem auto 0;
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+  }
+  @media (max-width: 480px) {
+    body { padding: 1rem; }
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <h1>🃏 Agent Card Tracker</h1>
+    <div class="subtitle">Products giving AI agents access to cards and payment infrastructure</div>
+  </div>
+  <div class="stats">
+    <div class="stat">
+      <div class="num" id="total-count">0</div>
+      <div class="label">Products</div>
+    </div>
+    <div class="stat">
+      <div class="num" id="live-count">0</div>
+      <div class="label">Live</div>
+    </div>
+  </div>
+</div>
+
+<div class="filters" id="filters"></div>
+<div class="grid" id="grid"></div>
+<div class="updated" id="updated"></div>
+
+<script>
+const products = [{"id":"creditclaw","name":"CreditClaw","description":"Self-hosted cards for AI agents with spending controls. Bot owners fund agents with allowances and guardrails. Daily/weekly/monthly budgets. Wallets and x402 coming next.","website":"https://creditclaw.com","twitter":null,"category":"Agent Card Issuer","status":"Early Beta (public beta Mar 1, 2026)","funding":null,"usage_data":"14,203 waitlist signups. Self-hosted cards live.","added":"2026-02-28","notes":"OpenClaw-native. Stripe-powered. Targets individual bot owners."},{"id":"proxy","name":"Proxy","description":"Virtual cards and payment infrastructure for AI agents. Dedicated card per agent/workflow with hard spending limits enforced at network level. Attestation-before-access model. MCP server integration.","website":"https://www.useproxy.ai","twitter":"https://x.com/useproxy_ai","category":"Agent Card Issuer","status":"Live","funding":null,"usage_data":null,"added":"2026-02-28","notes":"Published comprehensive agent payments landscape report. Strong MCP integration story."},{"id":"crossmint","name":"Crossmint","description":"Full agentic payments platform: agent wallets (fiat + stablecoin), virtual cards via Visa Intelligent Platform, agentic checkout API for Amazon/Shopify, agent credentials (W3C). Merchant of Record for returns/chargebacks.","website":"https://www.crossmint.com/solutions/agentic-payments","twitter":"https://x.com/crossmint","category":"Agent Card Issuer / Platform","status":"Live","funding":null,"usage_data":null,"added":"2026-02-28","notes":"Visa Intelligent Platform partner. Also does stablecoin wallets, x402, and credential issuance. Very broad offering."},{"id":"skyfire","name":"Skyfire","description":"Agent identity and payments network. KYA (Know Your Agent) protocol with signed JWTs for agent identity verification. Agent Checkout protocol for autonomous account signup, login, and payment. Digital wallets with spending limits.","website":"https://www.skyfire.xyz","twitter":"https://x.com/tryskyfire","category":"Agent Identity + Payments","status":"Live","funding":"Backed by a16z CSX, Coinbase Ventures","usage_data":"Visa pilot partner. Apify integration live.","added":"2026-02-28","notes":"Focus on agent identity layer. KYA protocol is unique differentiator. Powers Consumer Reports agent demo."},{"id":"nekuda","name":"Nekuda","description":"Agentic commerce infrastructure using Mandate Model. Captures user intent (what agent can buy, spending limits, approval rules) and stores/retrieves payment credentials just-in-time. Visa Intelligent Commerce launch partner.","website":"https://nekuda.ai","twitter":"https://x.com/nekaborot","category":"Agent Checkout / Mandates","status":"Live (Visa pilot)","funding":"$5M from Madrona, Amex Ventures, Visa Ventures (May 2025)","usage_data":"Pilots with Gensmo, Price.com, Henry Labs","added":"2026-02-28","notes":"Strong VC backing from strategic investors. 20 lines of code integration pitch."},{"id":"payos","name":"PayOS","description":"Network-issued Agent Tokens for AI-driven transactions at any card-accepting merchant. Processor-agnostic. Integrates with both Visa and Mastercard networks. First live Mastercard Agentic Token transaction (Sept 2025).","website":"https://www.payos.ai","twitter":"https://x.com/payaborot","category":"Agent Token Infrastructure","status":"Live (Visa + MC pilots)","funding":null,"usage_data":"First live MC Agentic Token transaction. BeyondStyle/Jomashop pilot.","added":"2026-02-28","notes":"Token-based approach vs card-based. Broad merchant acceptance but shared credential risk."},{"id":"prava","name":"Prava","description":"Payments API for AI agents. Prepaid wallets separate from bank accounts/credit cards. One developer wallet funds multiple agents with individual spending rules. Tokenized card payments. Visa Intelligent Commerce integration.","website":"https://www.prava.space","twitter":null,"category":"Agent Wallet / Payments API","status":"Live","funding":null,"usage_data":null,"added":"2026-02-28","notes":"Multi-agent wallet architecture. Good for platforms running many agents simultaneously."},{"id":"visa-intelligent-commerce","name":"Visa Intelligent Commerce","description":"Visa platform enabling AI agents to transact on behalf of cardholders. Includes Trusted Agent Protocol (TAP) for cryptographic agent identity, network tokenization, and partner ecosystem (Skyfire, Nekuda, PayOS, Crossmint).","website":"https://corporate.visa.com/en/sites/visa-perspectives/newsroom/visa-partners-complete-secure-agentic-transactions.html","twitter":"https://x.com/Visa","category":"Network / Platform","status":"Live (pilot partners)","funding":"N/A (Visa)","usage_data":"Hundreds of secure agent-initiated transactions completed (Dec 2025). Predicts millions of consumers by 2026 holiday.","added":"2026-02-28","notes":"The network-level enabler. TAP launched Oct 2025."},{"id":"mastercard-agent-pay","name":"Mastercard Agent Pay","description":"Mastercard agentic AI payments platform. Rolled out to all U.S. cardholders by Nov 2025. Enables secure, scalable AI agent-initiated purchases on Mastercard rails.","website":"https://www.mastercard.com/us/en/business/artificial-intelligence/mastercard-agent-pay.html","twitter":"https://x.com/Mastercard","category":"Network / Platform","status":"Live (US)","funding":"N/A (Mastercard)","usage_data":"Available to all US cardholders","added":"2026-02-28","notes":"Broad rollout. PayOS first to demo live MC Agentic Token."}];
+
+function getStatusClass(status) {
+  const s = status.toLowerCase();
+  if (s.includes('live')) return 'status-live';
+  if (s.includes('beta')) return 'status-beta';
+  return 'status-pilot';
+}
+
+function render(filter) {
+  const grid = document.getElementById('grid');
+  const filtered = filter === 'All'
+    ? products
+    : products.filter(p => p.category.includes(filter));
+
+  document.getElementById('total-count').textContent = products.length;
+  document.getElementById('live-count').textContent = products.filter(p => p.status.toLowerCase().includes('live')).length;
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card" data-category="${p.category}">
+      <div class="top">
+        <div class="name">${p.name}</div>
+        <span class="category">${p.category}</span>
+      </div>
+      <div class="desc">${p.description}</div>
+      <div class="meta">
+        <div class="meta-row">
+          <span class="meta-label">Status</span>
+          <span class="status-badge ${getStatusClass(p.status)}">${p.status}</span>
+        </div>
+        ${p.website ? `<div class="meta-row"><span class="meta-label">Website</span><span class="meta-value"><a href="${p.website}" target="_blank">${new URL(p.website).hostname}</a></span></div>` : ''}
+        ${p.twitter ? `<div class="meta-row"><span class="meta-label">X</span><span class="meta-value"><a href="${p.twitter}" target="_blank">${p.twitter.split('/').pop()}</a></span></div>` : ''}
+        ${p.funding ? `<div class="meta-row"><span class="meta-label">Funding</span><span class="meta-value">${p.funding}</span></div>` : ''}
+        ${p.usage_data ? `<div class="meta-row"><span class="meta-label">Usage</span><span class="meta-value">${p.usage_data}</span></div>` : ''}
+      </div>
+      ${p.notes ? `<div class="notes">${p.notes}</div>` : ''}
+    </div>
+  `).join('');
+}
+
+// Build filter buttons
+const categories = ['All', ...new Set(products.map(p => p.category))];
+const filtersEl = document.getElementById('filters');
+categories.forEach(c => {
+  const btn = document.createElement('button');
+  btn.className = 'filter-btn' + (c === 'All' ? ' active' : '');
+  btn.textContent = c;
+  btn.onclick = () => {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    render(c);
+  };
+  filtersEl.appendChild(btn);
+});
+
+document.getElementById('updated').textContent = 'Last updated: ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+render('All');
+</script>
+
+</body>
+</html>
