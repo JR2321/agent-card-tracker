@@ -115,5 +115,57 @@
     "usage_data": "Available to all US cardholders",
     "added": "2026-02-28",
     "notes": "Broad rollout. PayOS first to demo live MC Agentic Token."
+  },
+  {
+    "id": "moonpay-agents",
+    "name": "MoonPay Agents",
+    "description": "Non-custodial infrastructure layer enabling AI agents to create wallets, fund them, and transact in digital assets autonomously. Built on MoonPay CLI. Supports recurring purchases, cross-chain swaps, x402 compatibility, and fiat off-ramps. Human completes one-time KYC, then agent operates within permissions.",
+    "website": "https://www.moonpay.com",
+    "twitter": "https://x.com/moonaborot",
+    "category": "Agent Wallet / Crypto Payments",
+    "status": "Live",
+    "funding": "MoonPay (est. 2019, 500+ enterprise customers, 30M+ users)",
+    "usage_data": null,
+    "added": "2026-03-02",
+    "notes": "Crypto-native on-ramp for agents. Non-custodial wallets stored on user device. x402 compatible. Bridges fiat-to-crypto for agent economy."
+  },
+  {
+    "id": "stripe-spt",
+    "name": "Stripe Shared Payment Tokens (SPTs)",
+    "description": "Payment primitive for agentic commerce. Lets AI agents initiate payments with a customer's permission and preferred payment method without exposing underlying credentials. Supports Visa agentic network tokens, Mastercard Agent Pay tokens, and BNPL (Klarna, Affirm). First and only provider supporting both agentic network tokens and BNPL tokens through a single primitive.",
+    "website": "https://docs.stripe.com/agentic-commerce/concepts/shared-payment-tokens",
+    "twitter": "https://x.com/stripe",
+    "category": "Agent Payment Primitive",
+    "status": "Live",
+    "funding": "N/A (Stripe)",
+    "usage_data": "Adopted by Etsy, URBN (Anthropologie, Free People, Urban Outfitters). Klarna + Affirm BNPL integration launched March 3, 2026.",
+    "added": "2026-03-04",
+    "notes": "Launched Oct 2025. Major expansion March 3, 2026: added Visa + Mastercard agentic network tokens and BNPL (Klarna, Affirm). Positions Stripe as the unified aggregator across all agentic payment rails."
+  },
+  {
+    "id": "google-ucp",
+    "name": "Google Universal Commerce Protocol (UCP)",
+    "description": "Open standard for agentic commerce enabling AI agents to complete purchases on behalf of consumers across Google AI Mode and Gemini. Standardizes the programmatic exchange of information (via API, MCP, or A2A) between AI agents and merchant backends. Supports native checkout (direct integration) and embedded checkout (iframe). Merchant remains Merchant of Record. Open-source spec on GitHub.",
+    "website": "https://developers.google.com/merchant/ucp",
+    "twitter": "https://x.com/Google",
+    "category": "Agentic Commerce Protocol",
+    "status": "Live (waitlist for merchants)",
+    "funding": "N/A (Google)",
+    "usage_data": "Developed with Shopify, Etsy, Wayfair, Target, Walmart. Splitit, dozens of retail partners endorsing. Open-source: github.com/Universal-Commerce-Protocol/ucp",
+    "added": "2026-03-06",
+    "notes": "Announced January 2026. Help docs and merchant onboarding published March 2026. Roadmap includes multi-item carts, account linking for loyalty, post-purchase tracking/returns. Positions Google as the agentic commerce surface layer (discovery + checkout) while merchants keep customer data. Significant because it bridges AI agent surfaces directly to merchant checkout, complementing card-level solutions from Visa/MC/Stripe."
+  },
+  {
+    "id": "agentcard",
+    "name": "AgentCard",
+    "description": "Prepaid virtual Visa cards for AI agents. Instant issuance via CLI (npm install -g agent-cards). Single-use by default, locked to loaded amount. MCP integration for Claude Code, Cursor, and any MCP runtime. Card data (PAN, CVV) encrypted at rest with AES-256-GCM, decrypted only on explicit request. Works anywhere Visa is accepted.",
+    "website": "https://agentcard.sh",
+    "twitter": "https://x.com/keyserfaty",
+    "category": "Agent Card Issuer",
+    "status": "Live",
+    "funding": null,
+    "usage_data": null,
+    "added": "2026-03-07",
+    "notes": "Developer-first: two CLI commands to issue a card. Single-use cards limit blast radius per task. Native MCP integration (agent-cards setup-mcp). Stripe-powered checkout. Founded by @keyserfaty."
   }
 ]
